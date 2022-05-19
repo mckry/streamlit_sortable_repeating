@@ -19,7 +19,6 @@ else:
     if last_list != st.session_state['events_sortable_by_date']:
         st.experimental_rerun()
 
-
 if len(st.session_state['events_sortable_by_date']) > 0:
     list_of_events_sorted_by_date = []
     for item in st.session_state['events_sortable_by_date']:
@@ -63,29 +62,29 @@ else:
 def sort_by_buttons(event_list: list):
     list_of_events_sortable_by_buttons = []
     if len(event_list) > 0:
-        for index, item in enumerate(event_list):
+        for index_2, item_2 in enumerate(event_list):
             container_sortable_by_buttons = st.container()
             col1_sortable_by_buttons, col2_sortable_by_buttons, col3_sortable_by_buttons, col4_sortable_by_buttons = container_sortable_by_buttons.columns(4)
             with col1_sortable_by_buttons:
-                st.write(item)
+                st.write(item_2)
             with col2_sortable_by_buttons:
-                number_of_guests = st.number_input('Number of Guests', min_value=0, max_value=100, step=1, key=f'{item}_button')
+                number_of_guests_2 = st.number_input('Number of Guests', min_value=0, max_value=100, step=1, key=f'{item_2}_button')
             with col3_sortable_by_buttons:
-                if index > 0:
-                    move_up = st.button('up', key=f'{item}_button_up')
+                if index_2 > 0:
+                    move_up = st.button('up', key=f'{item_2}_button_up')
                     if move_up:
-                        list_of_events_sortable_by_buttons[index - 1]['order index'] += 1
-                        index -= 1
+                        list_of_events_sortable_by_buttons[index_2 - 1]['order index'] += 1
+                        index_2 -= 1
             with col4_sortable_by_buttons:
-                if index < len(event_list) - 1:
-                    move_down = st.button('down', key=f'{item}_button_down')
+                if index_2 < len(event_list) - 1:
+                    move_down = st.button('down', key=f'{item_2}_button_down')
                     if move_down:
-                        index += 1
+                        index_2 += 1
 
             single_event_sortable_by_buttons = {
-                            'event': item,
-                            'order index': index,
-                            'number of guests': number_of_guests
+                            'event': item_2,
+                            'order index': index_2,
+                            'number of guests': number_of_guests_2
                             }
             list_of_events_sortable_by_buttons.append(single_event_sortable_by_buttons)
 
@@ -97,7 +96,7 @@ def sort_by_buttons(event_list: list):
 
     return list_of_events_sortable_by_buttons
 
-st.write(st.session_state['events_sortable_by_buttons'])
+
 if len(st.session_state['events_sortable_by_buttons']) > 0:
     event_order = sort_by_buttons(st.session_state['events_sortable_by_buttons'])
     interim_complication_list_sortable_by_buttons = [{} for i in enumerate(event_order)]
