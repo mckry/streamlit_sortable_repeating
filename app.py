@@ -49,7 +49,7 @@ if len(st.session_state['events_sortable_by_date']) > 0:
         st.experimental_rerun()
 
 # ----------------------------------------------------------------------------------------------------------------------
-st.markdown('### Sort events by using buttons')
+st.markdown('### Sort Events by Pressing Up/Down-Buttons')
 
 if 'events_sortable_by_buttons' not in st.session_state:
     st.session_state['events_sortable_by_buttons'] = st.multiselect("events sortable by buttons",
@@ -104,5 +104,7 @@ if len(st.session_state['events_sortable_by_buttons']) > 0:
     interim_complication_list_sortable_by_buttons = [{} for i in enumerate(event_order)]
     for index, item in enumerate(event_order):
         interim_complication_list_sortable_by_buttons[item['order index']] = item['event']
-    st.session_state['events_sortable_by_buttons'] = interim_complication_list_sortable_by_buttons
-    st.experimental_rerun()
+    # only reruns the script if the order changed -> no infinite loop
+    if interim_complication_list_sortable_by_buttons != st.session_state['events_sortable_by_buttons']:
+        st.session_state['events_sortable_by_buttons'] = interim_complication_list_sortable_by_buttons
+        st.experimental_rerun()
