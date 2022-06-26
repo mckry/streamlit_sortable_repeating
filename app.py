@@ -42,11 +42,11 @@ if len(st.session_state['events_sortable_by_date']) > 0:
 
     sort_events = st.button('Sort by Date')
     if sort_events:
-        list_of_events_sorted_by_date.sort(key=lambda complication_item: complication_item['date'])
-        interim_event_list_sorted_by_dates = []
+        list_of_events_sorted_by_date.sort(key=lambda event_item: event_item['date'])
+        interim_list_sorted_by_dates = []
         for item in list_of_events_sorted_by_date:
-            interim_event_list_sorted_by_dates.append(item['event'])
-        st.session_state['events_sortable_by_date'] = interim_event_list_sorted_by_dates
+            interim_list_sorted_by_dates.append(item['event'])
+        st.session_state['events_sortable_by_date'] = interim_list_sorted_by_dates
         st.experimental_rerun()
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ else:
 
 
 def sort_by_buttons(event_list: list):
-    list_of_events_sortable_by_buttons = []
+    list_sortable_by_buttons = []
     if len(event_list) > 0:
         for index_2, item_2 in enumerate(event_list):
             container_sortable_by_buttons = st.container()
@@ -79,7 +79,7 @@ def sort_by_buttons(event_list: list):
                 if index_2 > 0:
                     move_up = st.button('up', key=f'{item_2}_button_up')
                     if move_up:
-                        list_of_events_sortable_by_buttons[index_2 - 1]['order index'] += 1
+                        list_sortable_by_buttons[index_2 - 1]['order index'] += 1
                         index_2 -= 1
             with col4_sortable_by_buttons:
                 if index_2 < len(event_list) - 1:
@@ -87,28 +87,28 @@ def sort_by_buttons(event_list: list):
                     if move_down:
                         index_2 += 1
 
-            single_event_sortable_by_buttons = {
+            single_event = {
                 'event': item_2,
                 'order index': index_2,
                 'number of guests': number_of_guests_2
             }
-            list_of_events_sortable_by_buttons.append(single_event_sortable_by_buttons)
+            list_sortable_by_buttons.append(single_event)
 
         # the order index of the list element below (press move_down) has to be changed outside the loop
-        for list_index, list_item in enumerate(list_of_events_sortable_by_buttons):
+        for list_index, list_item in enumerate(list_sortable_by_buttons):
             if list_index > 0:
-                if list_item['order index'] == list_of_events_sortable_by_buttons[list_index - 1]['order index']:
+                if list_item['order index'] == list_sortable_by_buttons[list_index - 1]['order index']:
                     list_item['order index'] -= 1
 
-    return list_of_events_sortable_by_buttons
+    return list_sortable_by_buttons
 
 
 if len(st.session_state['events_sortable_by_buttons']) > 0:
     event_order = sort_by_buttons(st.session_state['events_sortable_by_buttons'])
-    interim_complication_list_sortable_by_buttons = [{} for i in enumerate(event_order)]
+    interim_list_sortable_by_buttons = [{} for i in enumerate(event_order)]
     for index, item in enumerate(event_order):
-        interim_complication_list_sortable_by_buttons[item['order index']] = item['event']
+        interim_list_sortable_by_buttons[item['order index']] = item['event']
     # Important: only rerun the script if the order changed -> no infinite loop!
-    if interim_complication_list_sortable_by_buttons != st.session_state['events_sortable_by_buttons']:
-        st.session_state['events_sortable_by_buttons'] = interim_complication_list_sortable_by_buttons
+    if interim_list_sortable_by_buttons != st.session_state['events_sortable_by_buttons']:
+        st.session_state['events_sortable_by_buttons'] = interim_list_sortable_by_buttons
         st.experimental_rerun()
